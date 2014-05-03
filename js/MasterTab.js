@@ -11,7 +11,10 @@
                 MasterTab.pages.open(this);
             },
         }
-    }
+    },
+    config: {
+        TABID_PREFIX : 'T_',
+    },
 };
 
 MasterTab.getTabKey = function (tabId) {
@@ -37,7 +40,7 @@ MasterTab.pages.open = function (page) {
 
 MasterTab.session.tabs = {
     get: function(tabId){
-        return this['_' + tabId];
+        return this[MasterTab.config.TABID_PREFIX + tabId];
     },
 
     add: function(nTabId, sUrl){
@@ -48,14 +51,14 @@ MasterTab.session.tabs = {
                 title: sUrl,
                 favIconUrl: null,
             }
-            this['_' + nTabId] = tabInfo;
+            this[MasterTab.config.TABID_PREFIX + nTabId] = tabInfo;
             return tabInfo;
         },
 
     remove: function(tabId) {
         var key = MasterTab.getTabKey(tabId);
         MasterTab.history.remove(key);
-        delete this['_' + tabId];
+        delete this[MasterTab.config.TABID_PREFIX + tabId];
     }
 };
 
@@ -84,6 +87,14 @@ MasterTab.history = {
     },
 
     clear: function () {
+        // Remove the items that are in memory
+        var tabs = MasterTab.session.tabs;
+        for (var id in tabs) {
+            if (tabs.hasOwnProperty(id) && id.substring(0, MasterTab.config.TABID_PREFIX.length) == MasterTab.config.TABID_PREFIX) {
+                tabs.remove(id.substring(MasterTab.config.TABID_PREFIX.length));
+            }
+        };
+        // Clear the history
         chrome.storage.local.clear(function () {
             console.log('Tab history was cleared.');
         });
