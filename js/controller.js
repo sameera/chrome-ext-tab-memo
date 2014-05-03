@@ -9,19 +9,25 @@ var masterTabApp = angular
                     ]);
 
 masterTabApp.controller('TabListController', function ($scope) {
+
+    var backgroundPage = chrome.extension.getBackgroundPage();
+    var masterTab = backgroundPage.MasterTab;
+
     $scope.savedTabs = [];
 
-    chrome.storage.local.get(
-			null,
-			function (items) {
-			    $scope.$apply(function () {
-			        $scope.savedTabs = items;
-			    })
-			});
+    masterTab.history.getAll(function (items) {
+		$scope.$apply(function () {
+			$scope.savedTabs = items;
+		})
+	});
 
     $scope.clearHistory = function () {
-        chrome.storage.local.clear(function () {
-            console.log('Tab history was cleared.');
-        });
+        var backgroundPage = chrome.extension.getBackgroundPage();
+        backgroundPage.MasterTab.history.clear();
+    }
+
+    $scope.removeFromHistory = function (key) {
+        var backgroundPage = chrome.extension.getBackgroundPage();
+        backgroundPage.MasterTab.history.remove(key);
     };
 });

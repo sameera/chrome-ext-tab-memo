@@ -1,11 +1,13 @@
 <html data-ng-app="MasterTabExtension" data-ng-csp="MasterTabExtension">
 <body data-ng-controller="TabListController">
     <ul>
-        <li data-ng-repeat="tab in savedTabs"><img width="16" height="16" src="{{ tab.favIconUrl }}" /> <a href="{{ tab.url }}" target="_blank">{{ tab.title }}</a></li>
+        <li data-ng-repeat="tab in savedTabs">
+            <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">{{ tab.title }}</a>
+        </li>
     </ul>
     <button data-ng-click="clearHistory()">Clear Tab History</button>
 
-    <script type="text/javascript" src="angular.min.js"></script>
-    <script type="text/javascript" src="controller.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
 </body>
 </html>

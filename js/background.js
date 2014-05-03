@@ -10,8 +10,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             && changeInfo.url.substring(0, 4) == 'http'
             && changeInfo.url != listPageUrl) {
 
-        var tabInfo = MasterTab.session.tabs.add(tabId, changeInfo.url);
-        MasterTab.session.tabs.save(tabInfo);
+        // Keep inmemory until the page has finished loading
+        MasterTab.session.tabs.add(tabId, changeInfo.url);
 
     } else if (!tab.pinned && changeInfo.status == 'complete'
             && MasterTab.session.tabs.get(tabId)
@@ -19,7 +19,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         var tabInfo = MasterTab.session.tabs.get(tabId);
         tabInfo.title = tab.title;
         tabInfo.favIconUrl = tab.favIconUrl;
-        MasterTab.session.tabs.save(tabInfo);
+        MasterTab.history.save(tabInfo);
     }
 });
 
@@ -34,6 +34,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 })
 
 chrome.alarms.create('cron-opentabs', { delayInMinutes: 1, periodInMinutes: 5 });
+
 chrome.alarms.onAlarm.addListener(function (alarm) {
     if (alarm.name == 'cron-opentabs') {
         // Update all open tabs
@@ -47,7 +48,7 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
                     var newTab = sessionTabs.add(tab.id, tab.url);
                     newTab.title = tab.title;
                     newTab.favIconUrl = tab.favIconUrl;
-                    sessionTabs.save(newTab);
+                    MasterTab.history.save(newTab);
                 }
             }
         });

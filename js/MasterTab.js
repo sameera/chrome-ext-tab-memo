@@ -52,6 +52,14 @@ MasterTab.session.tabs = {
             return tabInfo;
         },
 
+    remove: function(tabId) {
+        var key = MasterTab.getTabKey(tabId);
+        MasterTab.history.remove(key);
+        delete this['_' + tabId];
+    }
+};
+
+MasterTab.history = {
     save: function(tabInfo) {
         var data = {};
         data[tabInfo.storageKey] = tabInfo;
@@ -62,13 +70,22 @@ MasterTab.session.tabs = {
         });
     },
 
-    remove: function(tabId) {
-        var key = MasterTab.getTabKey(tabId);
+    remove: function (key) {
         chrome.storage.local.remove(key, function () {
             console.log('Removed %s from storage', key);
             MasterTab.pages.listPage.open();
         });
+    },
 
-        delete this['_' + tabId];
-    }
+    getAll: function(callback) {
+        chrome.storage.local.get(
+			null,
+            callback);
+    },
+
+    clear: function () {
+        chrome.storage.local.clear(function () {
+            console.log('Tab history was cleared.');
+        });
+    },
 };
