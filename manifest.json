@@ -1,0 +1,17 @@
+{
+	"name": "Tab Memo",
+	"version": "1.0",
+	"manifest_version": 2,
+	"description": "Optimizes browser start up time by not reloading tabs on; replacing this behaviour with a Tab List page",
+	
+	"permissions":["storage", "tabs", "alarms", "*://*/*"],
+
+	"background": {
+		"scripts": ["MasterTab.js", "background.js"],
+		"persistent": false
+	},
+
+	"browser_action": {
+		"default_icon": "icon.png"
+	}
+}

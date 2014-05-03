@@ -1,0 +1,5 @@
+This software is released under Apache 2.0 License which can be found at
+http://www.apache.org/licenses/LICENSE-2.0.txt
+
+This software contains the following 3rd-party content of which the copyright is owned by the respective 3rd parties:
+- The Tabber icon by http://www.fatcow.com/
