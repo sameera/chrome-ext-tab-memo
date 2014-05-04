@@ -19,6 +19,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         var tabInfo = MasterTab.session.tabs.get(tabId);
         tabInfo.title = tab.title;
         tabInfo.favIconUrl = tab.favIconUrl;
+		tabInfo.lastUpdated = new Date();
         MasterTab.history.save(tabInfo);
     }
 });
@@ -29,6 +30,20 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
     }
 });
 
+/*
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+	var tabCache = MasterTab.session.tabs;
+	var savedTab = tabCache.get(activeInfo.tabId);
+	if (savedTab && (!savedTab.thumbUrl || 5 > Utils.Date.diff(savedTab.lastUpdated, new Date(), 'm'))) {
+		// Start the capture of this tab
+		chrome.tabs.captureVisibleTab(null, {}, function(imageUrl) {
+			console.log('Screen Capture for %s is saved to %s', savedTab.storageKey, imageUrl);
+			savedTab.thumbUrl = imageUrl;
+			savedTab.lastUpdated = new Date();
+		});
+	}
+});
+*/
 chrome.browserAction.onClicked.addListener(function (tab) {
     MasterTab.pages.listPage.open();
 })

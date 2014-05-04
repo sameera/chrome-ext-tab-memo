@@ -4,7 +4,7 @@
 	"manifest_version": 2,
 	"description": "Optimizes browser start up time by not reloading tabs on; replacing this behaviour with a Tab List page",
 	
-	"permissions":["storage", "tabs", "alarms", "*://*/*"],
+	"permissions":["storage", "tabs", "alarms", "<all_urls>"],
 
 	"background": {
 		"scripts": ["js/Utils.js", "js/MasterTab.js", "js/background.js"],

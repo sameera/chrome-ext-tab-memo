@@ -9,6 +9,7 @@
         <h1>Tab Memo - Memorized Tabs</h1>
         <ul>
             <li data-ng-repeat="tab in savedTabs">
+				<img src="{{ tab.thumbUrl }}" />
                 <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">{{ tab.title }}</a>
             </li>
         </ul>

@@ -18,7 +18,7 @@
 };
 
 MasterTab.getTabKey = function (tabId) {
-    return this.id + '_' + tabId;
+    return this.session.id + '_' + tabId;
 };
 
 MasterTab.pages.open = function (page) {

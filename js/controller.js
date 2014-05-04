@@ -4,7 +4,7 @@ var masterTabApp = angular
                         '$compileProvider',
                         function( $compileProvider ) {   
                             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
-                            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|chrome-extension):/);
+                            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|chrome-extension|data):/);
                         }
                     ]);
 
