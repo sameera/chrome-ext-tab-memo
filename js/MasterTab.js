@@ -50,6 +50,7 @@ MasterTab.session.tabs = {
                 url: sUrl,
                 title: sUrl,
                 favIconUrl: null,
+				lastUpdatd: new Date(),
             }
             this[MasterTab.config.TABID_PREFIX + nTabId] = tabInfo;
             return tabInfo;
@@ -63,25 +64,27 @@ MasterTab.session.tabs = {
 };
 
 MasterTab.history = {
+	storage: chrome.storage.local,
+	
     save: function(tabInfo) {
         var data = {};
         data[tabInfo.storageKey] = tabInfo;
 
-        chrome.storage.local.set(data, function () {
+        this.storage.set(data, function () {
             console.log('Saved %s to storage', tabInfo.url);
             MasterTab.pages.listPage.open();
         });
     },
 
     remove: function (key) {
-        chrome.storage.local.remove(key, function () {
+        this.storage.remove(key, function () {
             console.log('Removed %s from storage', key);
             MasterTab.pages.listPage.open();
         });
     },
 
     getAll: function(callback) {
-        chrome.storage.local.get(
+        this.storage.get(
 			null,
             callback);
     },
@@ -95,7 +98,7 @@ MasterTab.history = {
             }
         };
         // Clear the history
-        chrome.storage.local.clear(function () {
+        this.storage.clear(function () {
             console.log('Tab history was cleared.');
         });
     },

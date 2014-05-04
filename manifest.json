@@ -7,7 +7,7 @@
 	"permissions":["storage", "tabs", "alarms", "*://*/*"],
 
 	"background": {
-		"scripts": ["js/MasterTab.js", "js/background.js"],
+		"scripts": ["js/Utils.js", "js/MasterTab.js", "js/background.js"],
 		"persistent": false
 	},
 
