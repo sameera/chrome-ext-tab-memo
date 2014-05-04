@@ -1,13 +1,22 @@
 <html data-ng-app="MasterTabExtension" data-ng-csp="MasterTabExtension">
+<head>
+    <title>Tab Memo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+</head>
 <body data-ng-controller="TabListController">
-    <ul>
-        <li data-ng-repeat="tab in savedTabs">
-            <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">{{ tab.title }}</a>
-        </li>
-    </ul>
-    <button data-ng-click="clearHistory()">Clear Tab History</button>
-
+    <div class="container">
+        <h1>Tab Memo - Memorized Tabs</h1>
+        <ul>
+            <li data-ng-repeat="tab in savedTabs">
+                <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">{{ tab.title }}</a>
+            </li>
+        </ul>
+        <button class="btn btn-danger" data-ng-click="clearHistory()">Clear Tab History</button>
+    </div>
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/controller.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
 </body>
 </html>
