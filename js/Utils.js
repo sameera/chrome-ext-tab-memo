@@ -1,6 +1,6 @@
 var Utils = {};
 
-Utils.Date = function(){
+Utils.Date = (function(){
 	
 	return {
 		diff : function (date1, date2, datePart) {
@@ -19,4 +19,4 @@ Utils.Date = function(){
 			};
 		},
 	};
-};
+})();

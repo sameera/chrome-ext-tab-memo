@@ -1,31 +1,48 @@
-<html data-ng-app="MasterTabExtension" data-ng-csp="MasterTabExtension">
+<!DOCTYPE html>
+<html data-ng-app="MasterTabExtension" data-ng-csp="MasterTabExtension" lang="en">
 <head>
     <title>Tab Memo</title>
 	<meta name="viewport" content="user-scalable=no, width=device-width, minimum-scale=1, maximum-scale=1">
-
-	<link href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body data-ng-controller="TabListController">
     <div class="container">
-        <h1>Tab Memo - Memorized Tabs</h1>
+        <h1>Tab Memo <small>Memorized Tabs</small></h1>
 		
-
-        <ul>
-            <li data-ng-repeat="tab in savedTabs" style="float:left;">
-				<p>
-				<a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">
-					<img data-ng-src="{{ tab.thumbUrl }}" width="320" height="180" />
-				</a><br/>
-                <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <!-- {{ tab.title }} -->
-				</p>
-            </li>
-        </ul>
-		
-        <button class="btn btn-danger" data-ng-click="clearHistory()">Clear Tab History</button>
+		<div class="row">
+			<ul>
+				<li class="thumbnail" data-ng-repeat="tab in savedTabs">
+					<div class="wrapper">
+						<a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">
+							<img class="thumb" data-ng-src="{{ tab.thumbUrl }}" />
+						</a>
+						<div class="description">
+							<a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">
+								<p class="description_content">
+									<img class="favicon" src="{{ tab.favIconUrl }}" /> 
+									{{ tab.title }}
+								</p>
+							</a>
+						</div>
+						<button data-ng-click="removeFromHistory(tab.storageKey)" class="close">&times;</button>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="row">
+			<!--
+			<button class="btn btn-danger" data-ng-click="clearHistory()">Clear Tab History</button>
+			-->
+			<button class="btn btn-danger" data-container="body" data-toggle="popover" data-placement="top" 
+					data-content="This action cannot be undone. Are you sure you want to continue?">
+			  Clear Tab History
+			</button>
+		</div>
     </div>
     <script type="text/javascript" src="js/angular.min.js"></script>
-	<script type="text/javascript" src="js/angular-deckgrid.min"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="text/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/controller.js"></script>
 </body>
 </html>

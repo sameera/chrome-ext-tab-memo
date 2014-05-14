@@ -29,5 +29,6 @@ masterTabApp.controller('TabListController', function ($scope) {
     $scope.removeFromHistory = function (key) {
         var backgroundPage = chrome.extension.getBackgroundPage();
         backgroundPage.MasterTab.history.remove(key);
+		return false;
     };
 });

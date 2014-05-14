@@ -1,0 +1,47 @@
+h1 { text-align: center; }
+
+img.thumb {
+	width:640px;
+	height:360px;
+	position:absolute;
+	left:-80px;
+	clip:rect(0px, 400px, 180px, 80px);
+}
+
+img.favicon { width:16px; height:16px; }
+
+.container {
+	margin: 0px auto;
+	width: 80%;
+}
+
+li { float:left; margin:10px; }
+
+/*
+ * CSS Captions Code taken from http://web.enavu.com/tutorials/making-image-overlay-caption-using-css/
+ */
+div.wrapper{
+	float:left; /* important */
+	position:relative; /* important(so we can absolutely position the description div */
+	width:320px;
+	height:180px;
+}
+div.description{
+	position:absolute; /* absolute position (so we can position it where we want)*/
+	bottom:0px; /* position will be on bottom */
+	left:0px;
+	width:100%;
+	/* styling bellow */
+	background-color:black;
+	font-size:15px;
+	color:white;
+	opacity:0.6; /* transparency */
+	filter:alpha(opacity=60); /* IE transparency */
+	max-height:120px !important;
+	text-overflow: ellipsis;
+	overflow:hidden;
+}
+p.description_content{
+	padding:10px;
+	margin:0px;
+}

@@ -17,6 +17,11 @@
     },
 };
 
+MasterTab.isSupportedPage = function(url) {
+	return url.substring(0, 4) == 'http'
+		&& url != MasterTab.pages.listPage.url;
+}	
+
 MasterTab.getTabKey = function (tabId) {
     return this.session.id + '_' + tabId;
 };

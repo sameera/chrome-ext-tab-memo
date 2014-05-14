@@ -7,8 +7,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo
             && !tab.pinned
             && changeInfo.url
-            && changeInfo.url.substring(0, 4) == 'http'
-            && changeInfo.url != listPageUrl) {
+            && MasterTab.isSupportedPage(changeInfo.url)) {
 
         // Keep inmemory until the page has finished loading
         MasterTab.session.tabs.add(tabId, changeInfo.url);
@@ -33,9 +32,19 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
 chrome.tabs.onActivated.addListener(function (activeInfo) {
 	var tabCache = MasterTab.session.tabs;
 	var savedTab = tabCache.get(activeInfo.tabId);
-	if (savedTab && (!savedTab.thumbUrl || 5 > Utils.Date.diff(savedTab.lastUpdated, new Date(), 'm'))) {
-		chrome.tabs.get(activeInfo.tabId, function(tab){
-			if (tab.status === 'complete') {
+	// var isUnsavedTab = !savedTab;
+		
+	if (savedTab && (!savedTab.thumbUrl || 5 < Utils.Date.diff(savedTab.lastUpdated, new Date(), 'm'))) {
+		chrome.tabs.get(activeInfo.tabId, function(tab){		
+			if (!tab.pinned && tab.status === 'complete' && MasterTab.isSupportedPage(tab.url)) {
+				/*
+				if (isUnsavedTab) {
+					savedTab = MasterTab.session.tabs.add(activeInfo.tabId, tab.url);
+					savedTab.title = tab.title;
+					savedTab.favIconUrl = tab.favIconUrl;
+				}
+				*/
+			
 				// Start the capture of this tab
 				chrome.tabs.captureVisibleTab(null, {}, function(imageUrl) {
 					console.log('Screen Capture for %s is saved to %s', savedTab.storageKey, imageUrl);
