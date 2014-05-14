@@ -1,23 +1,31 @@
 <html data-ng-app="MasterTabExtension" data-ng-csp="MasterTabExtension">
 <head>
     <title>Tab Memo</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+	<meta name="viewport" content="user-scalable=no, width=device-width, minimum-scale=1, maximum-scale=1">
+
+	<link href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
 </head>
 <body data-ng-controller="TabListController">
     <div class="container">
         <h1>Tab Memo - Memorized Tabs</h1>
+		
+
         <ul>
-            <li data-ng-repeat="tab in savedTabs">
-				<img data-ng-src="{{ tab.thumbUrl }}" width="320" height="180" />
-                <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">{{ tab.title }}</a>
+            <li data-ng-repeat="tab in savedTabs" style="float:left;">
+				<p>
+				<a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">
+					<img data-ng-src="{{ tab.thumbUrl }}" width="320" height="180" />
+				</a><br/>
+                <img width="16" height="16" src="{{ tab.favIconUrl }}" /> <!-- {{ tab.title }} -->
+				</p>
             </li>
         </ul>
+		
         <button class="btn btn-danger" data-ng-click="clearHistory()">Clear Tab History</button>
     </div>
     <script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-deckgrid.min"></script>
     <script type="text/javascript" src="js/controller.js"></script>
-    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
 </body>
 </html>
