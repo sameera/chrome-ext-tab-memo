@@ -15,11 +15,31 @@ masterTabApp.controller('TabListController', function ($scope) {
 
     $scope.savedTabs = [];
 
-    masterTab.history.getAll(function (items) {
+    masterTab.history.getAll(function (items) {		
+		var savedTabs = [];
+		for (var i in items) {
+			savedTabs[savedTabs.length] = items[i];
+		};
+		
+		savedTabs.sort(function(t1, t2) {
+			if (t1.lastUpdated < t2.lastUpdated)
+				return -1;
+			else if (t1.lastUpdated > t2.lastUpdated)
+				return 1;
+			else
+				return 0;
+		});
+		
 		$scope.$apply(function () {
-			$scope.savedTabs = items;
+			$scope.savedTabs = savedTabs;
 		})
 	});
+	
+	$scope.openAndRemove = function(url, key) {
+		var backgroundPage = chrome.extension.getBackgroundPage();
+        backgroundPage.MasterTab.pages.open({url: url});
+		backgroundPage.MasterTab.history.remove(key);
+	}
 
     $scope.clearHistory = function () {
         var backgroundPage = chrome.extension.getBackgroundPage();

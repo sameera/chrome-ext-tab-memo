@@ -11,38 +11,61 @@
         <h1>Tab Memo <small>Memorized Tabs</small></h1>
 		
 		<div class="row">
-			<ul>
-				<li class="thumbnail" data-ng-repeat="tab in savedTabs">
-					<div class="wrapper">
-						<a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">
-							<img class="thumb" data-ng-src="{{ tab.thumbUrl }}" />
-						</a>
-						<div class="description">
-							<a href="{{ tab.url }}" data-ng-click="removeFromHistory(tab.storageKey)" target="_blank">
-								<p class="description_content">
-									<img class="favicon" src="{{ tab.favIconUrl }}" /> 
-									{{ tab.title }}
-								</p>
-							</a>
+			<div class="col-md-12">
+				<ul class="list-unstyled">
+					<li>
+						<button id="clearHistoryButton" class="btn btn-danger push-right" data-toggle="modal" data-target="#clearHistoryConfirmDlg">
+						  Clear Tab History
+						</button>
+					</li>
+				</ul>
+				<div class="modal fade"  id="clearHistoryConfirmDlg" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4>Clear Tab Memo History</h4>
+							</div>
+							<div class="modal-body">
+								<p>This will only clear the tabs that Tab Memo keeps in it's own history. It doesn't clear your browsing history.<br />
+								All open tabs will remain in Tab Memo's history.</p>
+								<p>Are you sure you want to continue?</p>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+								<button class="btn btn-danger" data-ng-click="clearHistory()">Yes</button>
+							</div>
 						</div>
-						<button data-ng-click="removeFromHistory(tab.storageKey)" class="close">&times;</button>
 					</div>
-				</li>
-			</ul>
+				</div>
+			</div>
 		</div>
+		
 		<div class="row">
-			<!--
-			<button class="btn btn-danger" data-ng-click="clearHistory()">Clear Tab History</button>
-			-->
-			<button class="btn btn-danger" data-container="body" data-toggle="popover" data-placement="top" 
-					data-content="This action cannot be undone. Are you sure you want to continue?">
-			  Clear Tab History
-			</button>
+			<div class="col-md-12">
+				<ul class="list-unstyled">
+					<li class="thumbnail" data-ng-repeat="tab in savedTabs">
+						<div class="wrapper">
+							<a data-ng-click="openAndRemove(tab.url, tab.storageKey)" target="_blank">
+								<img class="thumb" data-ng-src="{{ tab.thumbUrl }}" />
+							</a>
+							<div class="description">
+								<a data-ng-click="openAndRemove(tab.url, tab.storageKey)" target="_blank">
+									<p class="description_content">
+										<img class="favicon" src="{{ tab.favIconUrl }}" /> 
+										{{ tab.title }}
+									</p>
+								</a>
+							</div>
+							<button data-ng-click="removeFromHistory(tab.storageKey)" class="close">&times;</button>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
     </div>
     <script type="text/javascript" src="js/angular.min.js"></script>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="text/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/controller.js"></script>
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/TabListController.js"></script>
 </body>
 </html>

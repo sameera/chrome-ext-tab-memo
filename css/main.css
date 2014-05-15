@@ -1,5 +1,7 @@
 h1 { text-align: center; }
 
+.wrapper a { color: white; cursor: pointer; }
+
 img.thumb {
 	width:640px;
 	height:360px;

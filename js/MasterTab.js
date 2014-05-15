@@ -27,14 +27,20 @@ MasterTab.getTabKey = function (tabId) {
 };
 
 MasterTab.pages.open = function (page) {
-    var optionsUrl = page.url;
+    var url = page.url;
     chrome.tabs.query({}, function (extensionTabs) {
         var found = false;
+		var focus = (url !== MasterTab.pages.listPage.url); // Do not grab focus if this is the List page.
         for (var i = 0; i < extensionTabs.length; i++) {
-            if (optionsUrl == extensionTabs[i].url) {
+            if (url == extensionTabs[i].url) {
                 found = true;
                 console.log("tab id: " + extensionTabs[i].id);
-                chrome.tabs.reload(extensionTabs[i].id, null, null);
+				if (focus) {
+					chrome.tabs.update(extensionTabs[i].id, {active: focus});
+				} else {
+					chrome.tabs.reload(extensionTabs[i].id, null, null);
+				}
+				break;
             }
         }
         if (found == false) {
@@ -60,6 +66,17 @@ MasterTab.session.tabs = {
             this[MasterTab.config.TABID_PREFIX + nTabId] = tabInfo;
             return tabInfo;
         },
+	
+	find: function(url, callback) {
+		for (var internalTabId in this) {
+			var value = this[internalTabId];
+			if (Object.hasOwnProperty(internalTabId) && value && value.url && value.url === url) {
+				callback(value);
+				return;
+			}
+		}
+		callback(null);
+	},
 
     remove: function(tabId) {
         var key = MasterTab.getTabKey(tabId);

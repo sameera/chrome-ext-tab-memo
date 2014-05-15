@@ -32,26 +32,26 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
 chrome.tabs.onActivated.addListener(function (activeInfo) {
 	var tabCache = MasterTab.session.tabs;
 	var savedTab = tabCache.get(activeInfo.tabId);
-	// var isUnsavedTab = !savedTab;
+	var isUnsavedTab = !savedTab;
 		
-	if (savedTab && (!savedTab.thumbUrl || 5 < Utils.Date.diff(savedTab.lastUpdated, new Date(), 'm'))) {
+	if (isUnsavedTab || (!savedTab.thumbUrl || 5 < Utils.Date.diff(savedTab.lastUpdated, new Date(), 'm'))) {
 		chrome.tabs.get(activeInfo.tabId, function(tab){		
 			if (!tab.pinned && tab.status === 'complete' && MasterTab.isSupportedPage(tab.url)) {
-				/*
+				
+				var capturer = function (tabInfo) {
+					chrome.tabs.captureVisibleTab(null, {}, function(imageUrl) {
+						console.log('Screen Capture for %s is saved to %s', tabInfo.storageKey, imageUrl);
+						tabInfo.thumbUrl = imageUrl;
+						tabInfo.lastUpdated = new Date();
+						MasterTab.history.save(tabInfo);
+					});
+				};
+				
 				if (isUnsavedTab) {
-					savedTab = MasterTab.session.tabs.add(activeInfo.tabId, tab.url);
-					savedTab.title = tab.title;
-					savedTab.favIconUrl = tab.favIconUrl;
-				}
-				*/
-			
-				// Start the capture of this tab
-				chrome.tabs.captureVisibleTab(null, {}, function(imageUrl) {
-					console.log('Screen Capture for %s is saved to %s', savedTab.storageKey, imageUrl);
-					savedTab.thumbUrl = imageUrl;
-					savedTab.lastUpdated = new Date();
-					MasterTab.history.save(savedTab);
-				});
+					MasterTab.session.tabs.find(tab.url, function(t) { capturer(t); });
+				} else {
+					capturer(savedTab);
+				}	
 			}
 		});
 	}
@@ -72,12 +72,15 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
                 var sessionTabs = MasterTab.session.tabs;
                 var tabInfo = sessionTabs.get(tab.id);
 
-                if (!tabInfo && tab.url.substring(0, 4) == 'http') {
-                    var newTab = sessionTabs.add(tab.id, tab.url);
-                    newTab.title = tab.title;
-                    newTab.favIconUrl = tab.favIconUrl;
-                    MasterTab.history.save(newTab);
-                }
+                if (!tabInfo && MasterTab.isSupportedPage(tab.url)) {
+					MasterTab.session.tabs.find(tab.url, function(tabInfo) {
+						if (!tabInfo)
+							tabInfo = sessionTabs.add(tab.id, tab.url);
+						tabInfo.title = tab.title;
+						tabInfo.favIconUrl = tab.favIconUrl;
+						MasterTab.history.save(tabInfo);
+					});
+				}
             }
         });
     }
